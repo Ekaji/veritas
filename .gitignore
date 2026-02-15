@@ -1,0 +1,37 @@
+# Node
+node_modules/
+dist/
+
+# Rust/Anchor
+target/
+.anchor/
+test-ledger/
+
+# Secrets & Environment
+.env
+.env.*
+*.key
+*id.json
+keypair.json
+secret.json
+wallet.json
+veritas-keypair.json
+airdrop_guard-keypair.json
+airdrop_config_keypair.json
+agent/solana-id.json
+scripts/airdrop_config_keypair.json
+scripts/sybil_wallets.json
+
+# Large files / Installers
+solana-release/
+*.tar.bz2
+install_solana.sh
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp

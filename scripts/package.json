@@ -1,0 +1,19 @@
+{
+  "name": "veritas-scripts",
+  "version": "0.1.0",
+  "description": "Helper scripts for Veritas project",
+  "scripts": {
+    "sybil-sim": "ts-node simulate_sybil.ts"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.91.0",
+    "@solana/web3.js": "^1.91.0",
+    "dotenv": "^16.4.5",
+    "@coral-xyz/anchor": "^0.32.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

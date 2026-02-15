@@ -1,0 +1,23 @@
+{
+	"name": "Veritas Anchor Dev",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"remoteUser": "vscode",
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "18"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"rust-lang.rust-analyzer",
+				"bungcip.better-toml",
+				"jetmartin.bats",
+				"vadimcn.vscode-lldb"
+			]
+		}
+	},
+	"postCreateCommand": "bash .devcontainer/post-create.sh"
+}
