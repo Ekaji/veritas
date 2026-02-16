@@ -15,23 +15,49 @@ export class Executor {
     this.programId = new PublicKey(programId);
 
     // Load wallet
-    const walletPath = process.env.WALLET_PATH || "../solana-id.json";
-    const resolvedPath = path.resolve(process.cwd(), walletPath);
-    if (!fs.existsSync(resolvedPath)) {
-      throw new Error(`Wallet not found at ${resolvedPath}`);
+    const privateKeyEnv = process.env.PRIVATE_KEY;
+    let keypair: Keypair;
+
+    if (privateKeyEnv) {
+      try {
+        // Flexible parsing: handles raw JSON array or comma-separated string
+        const secretKey = privateKeyEnv.trim().startsWith("[")
+          ? JSON.parse(privateKeyEnv)
+          : privateKeyEnv.split(",").map(Number);
+        keypair = Keypair.fromSecretKey(new Uint8Array(secretKey));
+      } catch (e) {
+        throw new Error(
+          "Invalid PRIVATE_KEY format. Must be JSON array of numbers.",
+        );
+      }
+    } else {
+      const walletPath = process.env.WALLET_PATH || "../solana-id.json";
+      const resolvedPath = path.resolve(process.cwd(), walletPath);
+      if (!fs.existsSync(resolvedPath)) {
+        throw new Error(
+          `Wallet not found at ${resolvedPath} and PRIVATE_KEY not set`,
+        );
+      }
+      keypair = Keypair.fromSecretKey(
+        new Uint8Array(JSON.parse(fs.readFileSync(resolvedPath, "utf-8"))),
+      );
     }
-    const keypair = Keypair.fromSecretKey(
-      new Uint8Array(JSON.parse(fs.readFileSync(resolvedPath, "utf-8"))),
-    );
+
     const wallet = new Wallet(keypair);
 
     this.provider = new AnchorProvider(connection, wallet, {});
 
     // Load IDL
-    // Assuming agent is run from agent/ directory, so ../target/idl/veritas.json is correct relative to CWD
-    const idlPath = path.resolve(process.cwd(), "../target/idl/veritas.json");
+    // Priority: 1. Local (Docker/deployed), 2. Dev (target)
+    let idlPath = path.resolve(process.cwd(), "idl/veritas.json");
     if (!fs.existsSync(idlPath)) {
-      throw new Error(`IDL not found at ${idlPath}. Run anchor build first.`);
+      idlPath = path.resolve(process.cwd(), "../target/idl/veritas.json");
+    }
+
+    if (!fs.existsSync(idlPath)) {
+      throw new Error(
+        `IDL not found at ${idlPath}. Run anchor build first or copy to agent/idl/.`,
+      );
     }
     const idl = JSON.parse(fs.readFileSync(idlPath, "utf-8"));
 

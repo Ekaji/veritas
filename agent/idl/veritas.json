@@ -1,0 +1,161 @@
+{
+  "address": "8r7dBmeeYTYiXtACHrFSgTYcQtUySu4WA1moGaA8uXMZ",
+  "metadata": {
+    "name": "veritas",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "initialize_trust_account",
+      "discriminator": [
+        221,
+        51,
+        198,
+        83,
+        103,
+        49,
+        30,
+        185
+      ],
+      "accounts": [
+        {
+          "name": "trust_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  117,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "wallet"
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update_score",
+      "discriminator": [
+        188,
+        226,
+        238,
+        41,
+        14,
+        241,
+        105,
+        215
+      ],
+      "accounts": [
+        {
+          "name": "trust_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  117,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trust_account.address",
+                "account": "TrustAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "score",
+          "type": "u8"
+        },
+        {
+          "name": "flags",
+          "type": "u32"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "TrustAccount",
+      "discriminator": [
+        53,
+        140,
+        220,
+        2,
+        123,
+        7,
+        49,
+        109
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidScore",
+      "msg": "Score must be between 0 and 100"
+    }
+  ],
+  "types": [
+    {
+      "name": "TrustAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "address",
+            "type": "pubkey"
+          },
+          {
+            "name": "score",
+            "type": "u8"
+          },
+          {
+            "name": "last_updated",
+            "type": "i64"
+          },
+          {
+            "name": "flags",
+            "type": "u32"
+          }
+        ]
+      }
+    }
+  ]
+}
